@@ -4,12 +4,18 @@ import DottedMap from "dotted-map";
 import { motion } from "motion/react";
 import Image from "next/image";
 import { useTheme } from "next-themes";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
+
+interface MapPoint {
+  lat: number;
+  lng: number;
+  label?: string;
+}
 
 interface MapProps {
   dots?: Array<{
-    start: { lat: number; lng: number; label?: string };
-    end: { lat: number; lng: number; label?: string };
+    start: MapPoint;
+    end: MapPoint;
   }>;
   lineColor?: string;
 }
@@ -19,9 +25,17 @@ export default function WorldMap({
   lineColor = "#0ea5e9",
 }: MapProps) {
   const svgRef = useRef<SVGSVGElement>(null);
-  const map = new DottedMap({ height: 100, grid: "diagonal" });
-
   const { theme } = useTheme();
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
+  }, []);
+
+  const map = new DottedMap({ height: 100, grid: "diagonal" });
 
   const svgMap = map.getSVG({
     radius: 0.22,
@@ -45,10 +59,9 @@ export default function WorldMap({
     return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
   };
 
-  // Create unique identifiers for dots to avoid index-based keys
   const dotsWithIds = dots.map((dot, i) => ({
     ...dot,
-    id: `dot-${dot.start.lat}-${dot.start.lng}-${dot.end.lat}-${dot.end.lng}-${i}`,
+    id: `dot-${i}`,
   }));
 
   return (
@@ -60,46 +73,38 @@ export default function WorldMap({
         height={495}
         width={1056}
         draggable={false}
+        priority
       />
+
       <svg
         ref={svgRef}
         viewBox="0 0 800 400"
-        className="w-full h-full absolute inset-0 pointer-events-none select-none"
+        className="w-full h-full absolute inset-0 select-none"
+        style={{ overflow: "visible" }}
         aria-label="Interactive world map with connection paths"
       >
         <title>World Map Connections</title>
-        {dotsWithIds.map((dot) => {
+
+        {/* PATHS */}
+        {dotsWithIds.map((dot, index) => {
           const startPoint = projectPoint(dot.start.lat, dot.start.lng);
           const endPoint = projectPoint(dot.end.lat, dot.end.lng);
-          const dotIndex = dots.indexOf(
-            dots.find(
-              (d) =>
-                d.start.lat === dot.start.lat &&
-                d.start.lng === dot.start.lng &&
-                d.end.lat === dot.end.lat &&
-                d.end.lng === dot.end.lng,
-            ) as (typeof dots)[0],
-          );
+
           return (
-            <g key={`path-group-${dot.id}`}>
-              <motion.path
-                d={createCurvedPath(startPoint, endPoint)}
-                fill="none"
-                stroke="url(#path-gradient)"
-                strokeWidth="1"
-                initial={{
-                  pathLength: 0,
-                }}
-                animate={{
-                  pathLength: 1,
-                }}
-                transition={{
-                  duration: 1,
-                  delay: 0.5 * dotIndex,
-                  ease: "easeOut",
-                }}
-              />
-            </g>
+            <motion.path
+              key={`path-${dot.id}`}
+              d={createCurvedPath(startPoint, endPoint)}
+              fill="none"
+              stroke="url(#path-gradient)"
+              strokeWidth="1"
+              initial={{ pathLength: 0 }}
+              animate={{ pathLength: 1 }}
+              transition={{
+                duration: 2,
+                delay: index * 0.3,
+                ease: "easeInOut",
+              }}
+            />
           );
         })}
 
@@ -112,74 +117,79 @@ export default function WorldMap({
           </linearGradient>
         </defs>
 
-        {dotsWithIds.map((dot) => (
-          <g key={`points-group-${dot.id}`}>
-            <g key={`start-${dot.id}`}>
-              <circle
-                cx={projectPoint(dot.start.lat, dot.start.lng).x}
-                cy={projectPoint(dot.start.lat, dot.start.lng).y}
-                r="2"
-                fill={lineColor}
-              />
-              <circle
-                cx={projectPoint(dot.start.lat, dot.start.lng).x}
-                cy={projectPoint(dot.start.lat, dot.start.lng).y}
-                r="2"
-                fill={lineColor}
-                opacity="0.5"
+        {/* POINTS + TOOLTIPS */}
+        {dotsWithIds.map((dot) => {
+          const start = projectPoint(dot.start.lat, dot.start.lng);
+          const end = projectPoint(dot.end.lat, dot.end.lng);
+
+          return (
+            <g key={`points-${dot.id}`}>
+              {/* START */}
+              <g
+                className="group pointer-events-auto"
+                transform={`translate(${start.x}, ${start.y})`}
               >
-                <animate
-                  attributeName="r"
-                  from="2"
-                  to="8"
-                  dur="1.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  from="0.5"
-                  to="0"
-                  dur="1.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-              </circle>
-            </g>
-            <g key={`end-${dot.id}`}>
-              <circle
-                cx={projectPoint(dot.end.lat, dot.end.lng).x}
-                cy={projectPoint(dot.end.lat, dot.end.lng).y}
-                r="2"
-                fill={lineColor}
-              />
-              <circle
-                cx={projectPoint(dot.end.lat, dot.end.lng).x}
-                cy={projectPoint(dot.end.lat, dot.end.lng).y}
-                r="2"
-                fill={lineColor}
-                opacity="0.5"
+                <circle r="2" fill={lineColor} />
+                <circle r="2" fill={lineColor} opacity="0.5">
+                  <animate
+                    attributeName="r"
+                    from="2"
+                    to="8"
+                    dur="1.5s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    from="0.5"
+                    to="0"
+                    dur="1.5s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+
+                {!isMobile && dot.start.label && (
+                  <foreignObject x={-60} y={-36} width={120} height={28}>
+                    <div className="pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity text-xs text-white bg-black/80 px-2 py-1 rounded text-center">
+                      {dot.start.label}
+                    </div>
+                  </foreignObject>
+                )}
+              </g>
+
+              {/* END */}
+              <g
+                className="group pointer-events-auto"
+                transform={`translate(${end.x}, ${end.y})`}
               >
-                <animate
-                  attributeName="r"
-                  from="2"
-                  to="8"
-                  dur="1.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-                <animate
-                  attributeName="opacity"
-                  from="0.5"
-                  to="0"
-                  dur="1.5s"
-                  begin="0s"
-                  repeatCount="indefinite"
-                />
-              </circle>
+                <circle r="2" fill={lineColor} />
+                <circle r="2" fill={lineColor} opacity="0.5">
+                  <animate
+                    attributeName="r"
+                    from="2"
+                    to="8"
+                    dur="1.5s"
+                    repeatCount="indefinite"
+                  />
+                  <animate
+                    attributeName="opacity"
+                    from="0.5"
+                    to="0"
+                    dur="1.5s"
+                    repeatCount="indefinite"
+                  />
+                </circle>
+
+                {!isMobile && dot.end.label && (
+                  <foreignObject x={-60} y={-36} width={120} height={28}>
+                    <div className="pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity text-xs text-white bg-black/80 px-2 py-1 rounded text-center">
+                      {dot.end.label}
+                    </div>
+                  </foreignObject>
+                )}
+              </g>
             </g>
-          </g>
-        ))}
+          );
+        })}
       </svg>
     </div>
   );

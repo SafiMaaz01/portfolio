@@ -1,7 +1,6 @@
 "use client";
 
 import { useClerk, useUser } from "@clerk/nextjs";
-import { MessageCircle, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 
@@ -51,36 +50,27 @@ export function ProfileImage({
         </div>
         <span className="text-xs font-medium text-white">Online</span>
       </div>
-
-      {/* Hover Overlay
+      {/* Hover Overlay */}
       <div
         className={`absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300 ${
           isHovered ? "opacity-100" : "opacity-0"
         }`}
       >
         <div className="text-center space-y-3">
-          {open ? (
-            <X className="w-12 h-12 text-white mx-auto" />
-          ) : (
-            <MessageCircle className="w-12 h-12 text-white mx-auto" />
-          )}
+          {/* Icon placeholder (optional but keeps layout identical) */}
+          <div className="w-12 h-12 mx-auto rounded-full bg-white/20 flex items-center justify-center">
+            <span className="text-white text-xl font-semibold">
+              {isSignedIn ? "👋" : "🔐"}
+            </span>
+          </div>
 
           <div className="text-white text-xl font-semibold">
-            {open ? "Close Chat" : "Chat with AI Twin"}
+            {isSignedIn ? "Welcome back" : "Sign in"}
           </div>
+
           <div className="text-white/80 text-sm">
-            {open ? "Click to close chat" : "Click to open chat"}
+            {isSignedIn ? "Glad to see you here" : "Click to sign in"}
           </div>
-        </div>
-      </div> */}
-      {/* Hover Overlay (visual only) */}
-      <div
-        className={`absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300 ${
-          isHovered ? "opacity-100" : "opacity-0"
-        }`}
-      >
-        <div className="text-white text-lg font-semibold">
-          {isSignedIn ? "Welcome" : "Sign in"}
         </div>
       </div>
     </button>
