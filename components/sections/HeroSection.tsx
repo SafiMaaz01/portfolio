@@ -5,6 +5,7 @@ import { LayoutTextFlip } from "@/components/ui/layout-text-flip";
 import { urlFor } from "@/sanity/lib/image";
 import { sanityFetch } from "@/sanity/lib/live";
 import { ProfileImage } from "./ProfileImage";
+import { Mail, MapPin, CheckCircle } from "lucide-react";
 
 const HERO_QUERY = defineQuery(`*[_id == "singleton-profile"][0]{
   firstName,
@@ -113,19 +114,19 @@ export async function HeroSection() {
               <div className="flex flex-wrap gap-4 @md/hero:gap-6 pt-4 text-xs @md/hero:text-sm text-muted-foreground">
                 {profile.email && (
                   <div className="flex items-center gap-2">
-                    <span>📧</span>
+                    <Mail className="h-4 w-4 @md/hero:h-5 @md/hero:w-5 text-blue-500" />
                     <span className="truncate">{profile.email}</span>
                   </div>
                 )}
                 {profile.location && (
                   <div className="flex items-center gap-2">
-                    <span>📍</span>
+                    <MapPin className="h-4 w-4 @md/hero:h-5 @md/hero:w-5 text-red-700" />
                     <span>{profile.location}</span>
                   </div>
                 )}
                 {profile.availability && (
                   <div className="flex items-center gap-2">
-                    <span>✅</span>
+                    <CheckCircle className="h-4 w-4 @md/hero:h-5 @md/hero:w-5 text-green-500" />
                     <span>{profile.availability}</span>
                   </div>
                 )}
@@ -136,8 +137,8 @@ export async function HeroSection() {
             {profile.profileImage && (
               <ProfileImage
                 imageUrl={urlFor(profile.profileImage)
-                  .width(600)
-                  .height(600)
+                  .width(400)
+                  .height(400)
                   .url()}
                 firstName={profile.firstName || ""}
                 lastName={profile.lastName || ""}
