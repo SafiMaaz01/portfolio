@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef } from "react";
-import { motion } from "motion/react";
 import DottedMap from "dotted-map";
-
+import { motion } from "motion/react";
+import Image from "next/image";
 import { useTheme } from "next-themes";
+import { useRef } from "react";
 
 interface MapProps {
   dots?: Array<{
@@ -27,7 +27,7 @@ export default function WorldMap({
     radius: 0.22,
     color: theme === "dark" ? "#FFFFFF40" : "#00000040",
     shape: "circle",
-    backgroundColor: theme === "dark" ? "black" : "white",
+    backgroundColor: "transparent",
   });
 
   const projectPoint = (lat: number, lng: number) => {
@@ -38,33 +38,50 @@ export default function WorldMap({
 
   const createCurvedPath = (
     start: { x: number; y: number },
-    end: { x: number; y: number }
+    end: { x: number; y: number },
   ) => {
     const midX = (start.x + end.x) / 2;
     const midY = Math.min(start.y, end.y) - 50;
     return `M ${start.x} ${start.y} Q ${midX} ${midY} ${end.x} ${end.y}`;
   };
 
+  // Create unique identifiers for dots to avoid index-based keys
+  const dotsWithIds = dots.map((dot, i) => ({
+    ...dot,
+    id: `dot-${dot.start.lat}-${dot.start.lng}-${dot.end.lat}-${dot.end.lng}-${i}`,
+  }));
+
   return (
-    <div className="w-full aspect-[2/1] dark:bg-black bg-white rounded-lg  relative font-sans">
-      <img
+    <div className="w-full aspect-[2/1] rounded-lg relative font-sans">
+      <Image
         src={`data:image/svg+xml;utf8,${encodeURIComponent(svgMap)}`}
         className="h-full w-full [mask-image:linear-gradient(to_bottom,transparent,white_10%,white_90%,transparent)] pointer-events-none select-none"
-        alt="world map"
-        height="495"
-        width="1056"
+        alt="world map showing global connectivity"
+        height={495}
+        width={1056}
         draggable={false}
       />
       <svg
         ref={svgRef}
         viewBox="0 0 800 400"
         className="w-full h-full absolute inset-0 pointer-events-none select-none"
+        aria-label="Interactive world map with connection paths"
       >
-        {dots.map((dot, i) => {
+        <title>World Map Connections</title>
+        {dotsWithIds.map((dot) => {
           const startPoint = projectPoint(dot.start.lat, dot.start.lng);
           const endPoint = projectPoint(dot.end.lat, dot.end.lng);
+          const dotIndex = dots.indexOf(
+            dots.find(
+              (d) =>
+                d.start.lat === dot.start.lat &&
+                d.start.lng === dot.start.lng &&
+                d.end.lat === dot.end.lat &&
+                d.end.lng === dot.end.lng,
+            ) as (typeof dots)[0],
+          );
           return (
-            <g key={`path-group-${i}`}>
+            <g key={`path-group-${dot.id}`}>
               <motion.path
                 d={createCurvedPath(startPoint, endPoint)}
                 fill="none"
@@ -78,11 +95,10 @@ export default function WorldMap({
                 }}
                 transition={{
                   duration: 1,
-                  delay: 0.5 * i,
+                  delay: 0.5 * dotIndex,
                   ease: "easeOut",
                 }}
-                key={`start-upper-${i}`}
-              ></motion.path>
+              />
             </g>
           );
         })}
@@ -96,9 +112,9 @@ export default function WorldMap({
           </linearGradient>
         </defs>
 
-        {dots.map((dot, i) => (
-          <g key={`points-group-${i}`}>
-            <g key={`start-${i}`}>
+        {dotsWithIds.map((dot) => (
+          <g key={`points-group-${dot.id}`}>
+            <g key={`start-${dot.id}`}>
               <circle
                 cx={projectPoint(dot.start.lat, dot.start.lng).x}
                 cy={projectPoint(dot.start.lat, dot.start.lng).y}
@@ -130,7 +146,7 @@ export default function WorldMap({
                 />
               </circle>
             </g>
-            <g key={`end-${i}`}>
+            <g key={`end-${dot.id}`}>
               <circle
                 cx={projectPoint(dot.end.lat, dot.end.lng).x}
                 cy={projectPoint(dot.end.lat, dot.end.lng).y}

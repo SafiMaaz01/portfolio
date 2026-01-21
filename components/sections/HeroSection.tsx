@@ -54,14 +54,14 @@ export async function HeroSection() {
                   text={profile.headlineStaticText}
                   words={profile.headlineAnimatedWords}
                   duration={profile.headlineAnimationDuration || 3000}
-                  className="text-xl @md/hero:text-2xl @lg/hero:text-3xl text-muted-foreground font-medium"
+                  className="text-xl @md/hero:text-2xl @lg/hero:text-3xl text-muted-foreground font-medium translate-x-1 sm:translate-x-2 md:translate-x-4"
                 />
               ) : (
                 <p className="text-xl @md/hero:text-2xl @lg/hero:text-3xl text-muted-foreground font-medium">
                   {profile.headline}
                 </p>
               )}
-              <p className="text-base @md/hero:text-lg text-muted-foreground leading-relaxed">
+              <p className="text-base @md/hero:text-lg text-muted-foreground leading-relaxed mt-5">
                 {profile.shortBio}
               </p>
 
