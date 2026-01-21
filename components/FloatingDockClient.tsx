@@ -5,7 +5,6 @@ import { IconLogout, IconMenu2, IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { useState } from "react";
 import { DynamicIcon } from "./DynamicIcon";
-import { useSidebar } from "./ui/sidebar";
 
 interface NavItem {
   title?: string | null;
@@ -41,12 +40,10 @@ const getVisibleLinks = (links: DockLink[], maxItems: number) => {
 export function FloatingDockClient({ navItems }: FloatingDockClientProps) {
   const { isSignedIn } = useUser();
   const { signOut } = useClerk();
-  const { open, isMobile, openMobile } = useSidebar();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [desktopMoreMenuOpen, setDesktopMoreMenuOpen] = useState(false);
   const [mobileMoreMenuOpen, setMobileMoreMenuOpen] = useState(false);
 
-  const isSidebarOpen = isMobile ? openMobile : open;
 
   const links: DockLink[] = [
     ...navItems.map((item) => ({
@@ -55,7 +52,7 @@ export function FloatingDockClient({ navItems }: FloatingDockClientProps) {
       icon: <DynamicIcon iconName={item.icon || "IconHome"} />,
       isExternal: item.isExternal,
     })),
-    ...(isSignedIn && !isSidebarOpen
+    ...(isSignedIn
       ? [
           {
             title: "Sign Out",
@@ -73,11 +70,7 @@ export function FloatingDockClient({ navItems }: FloatingDockClientProps) {
     <>
       {/* Desktop: Horizontal dock - bottom left on md, bottom center on lg+ */}
       <div
-        className={`hidden md:block fixed z-30 transition-all duration-300 pointer-events-none group/dock ${
-          isSidebarOpen
-            ? "bottom-0 left-[calc(50%-var(--sidebar-width)/2)] -translate-x-1/2 pb-3"
-            : "bottom-4 md:left-4 md:translate-x-0 lg:left-1/2 lg:-translate-x-1/2"
-        }`}
+       className="hidden md:block fixed bottom-4 lg:left-1/2 lg:-translate-x-1/2 md:left-4 z-30 pointer-events-none group/dock"
       >
         <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl md:rounded-2xl bg-white/20 dark:bg-black/30 hover:bg-white/30 dark:hover:bg-black/40 backdrop-blur-xl border border-white/30 dark:border-white/20 hover:border-white/40 dark:hover:border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] pointer-events-auto transition-all duration-300">
           {desktop.visible.map((item) => (

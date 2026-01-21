@@ -4,7 +4,6 @@ import { useClerk, useUser } from "@clerk/nextjs";
 import { MessageCircle, X } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
-import { useSidebar } from "../ui/sidebar";
 
 interface ProfileImageProps {
   imageUrl: string;
@@ -18,14 +17,19 @@ export function ProfileImage({
   lastName,
 }: ProfileImageProps) {
   const [isHovered, setIsHovered] = useState(false);
-  const { toggleSidebar, open } = useSidebar();
   const { isSignedIn } = useUser();
   const { openSignIn } = useClerk();
+
+  const handleInteraction = () => {
+    if (!isSignedIn) {
+      openSignIn();
+    }
+  };
 
   return (
     <button
       type="button"
-      onClick={() => (isSignedIn ? toggleSidebar() : openSignIn())}
+      onClick={handleInteraction}
       className="relative aspect-square rounded-2xl overflow-hidden border-4 border-primary/20 block group cursor-pointer w-full"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -48,7 +52,7 @@ export function ProfileImage({
         <span className="text-xs font-medium text-white">Online</span>
       </div>
 
-      {/* Hover Overlay */}
+      {/* Hover Overlay
       <div
         className={`absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300 ${
           isHovered ? "opacity-100" : "opacity-0"
@@ -67,6 +71,16 @@ export function ProfileImage({
           <div className="text-white/80 text-sm">
             {open ? "Click to close chat" : "Click to open chat"}
           </div>
+        </div>
+      </div> */}
+      {/* Hover Overlay (visual only) */}
+      <div
+        className={`absolute inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center transition-opacity duration-300 ${
+          isHovered ? "opacity-100" : "opacity-0"
+        }`}
+      >
+        <div className="text-white text-lg font-semibold">
+          {isSignedIn ? "Welcome" : "Sign in"}
         </div>
       </div>
     </button>
