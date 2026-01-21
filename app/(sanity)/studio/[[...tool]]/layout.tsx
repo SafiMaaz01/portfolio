@@ -11,8 +11,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 export const metadata: Metadata = {
-    title:"NextGen Portfolio Studio",
-    description: "NextGen Portfolio Studio"
+  title: "NextGen Portfolio Studio",
+  description: "NextGen Portfolio Studio",
 };
 
 function Layout({ children }: { children: React.ReactNode }) {
