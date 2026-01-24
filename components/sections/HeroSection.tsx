@@ -47,6 +47,7 @@ export async function HeroSection() {
             <div className="@container/hero space-y-4 @md/hero:space-y-6">
               <h1 className="text-4xl @md/hero:text-5xl @lg/hero:text-7xl font-bold tracking-tight">
                 {profile.firstName}{" "}
+                {profile.middleName && <>{profile.middleName} </>}
                 <span className="text-primary">{profile.lastName}</span>
               </h1>
               {profile.headlineStaticText &&
@@ -142,6 +143,7 @@ export async function HeroSection() {
                   .height(600)
                   .url()}
                 firstName={profile.firstName || ""}
+                middleName={profile.middleName || ""}
                 lastName={profile.lastName || ""}
               />
             )}
