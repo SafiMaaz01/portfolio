@@ -7,10 +7,10 @@ import {
   IconHome,
   IconMail,
   IconMessage,
-  IconQuestionMark,
   IconRocket,
   IconUser,
 } from "@tabler/icons-react";
+import dynamic from "next/dynamic";
 import type React from "react";
 
 interface DynamicIconProps {
@@ -18,9 +18,11 @@ interface DynamicIconProps {
   className?: string;
 }
 
-// Map common icons used in the CMS to their components
-// This prevents bundling the entire 5000+ icon library
-const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
+// Common icons we want to bundle in the main chunk for instant loading
+const STATIC_ICONS: Record<
+  string,
+  React.ComponentType<{ className?: string }>
+> = {
   IconHome,
   IconUser,
   IconBriefcase,
@@ -31,18 +33,33 @@ const ICON_MAP: Record<string, React.ComponentType<{ className?: string }>> = {
   IconCertificate,
 };
 
+// Lazily load the rest of the library only if needed
+// This keeps the initial bundle size small while supporting all 5000+ icons
+const FullIconLibrary = dynamic(
+  () =>
+    import("@tabler/icons-react").then((mod) => {
+      const Icons = mod as unknown as Record<
+        string,
+        React.ComponentType<{ className?: string }>
+      >;
+      return function IconComponent({ iconName, className }: DynamicIconProps) {
+        const Icon = Icons[iconName] || Icons.IconQuestionMark;
+        return <Icon className={className} />;
+      };
+    }),
+  { ssr: false },
+);
+
 export function DynamicIcon({
   iconName,
   className = "h-full w-full text-neutral-500 dark:text-neutral-300",
 }: DynamicIconProps) {
-  // Try to find the icon in our curated map
-  const Icon = ICON_MAP[iconName];
+  // 1. Check if the icon is in our fast static map
+  const StaticIcon = STATIC_ICONS[iconName];
+  if (StaticIcon) {
+    return <StaticIcon className={className} />;
+  }
 
-  // If the icon exists in our map, render it; otherwise show a fallback question mark icon
-  // This approach is much faster than dynamic string-based lookups from the whole library
-  return Icon ? (
-    <Icon className={className} />
-  ) : (
-    <IconQuestionMark className={className} />
-  );
+  // 2. Fallback to the full library (lazily loaded)
+  return <FullIconLibrary iconName={iconName} className={className} />;
 }
