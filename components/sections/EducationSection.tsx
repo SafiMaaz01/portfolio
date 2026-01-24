@@ -15,6 +15,7 @@ const EDUCATION_QUERY =
   current,
   gpa,
   description,
+  achievements,
   logo,
   website,
   order
@@ -129,7 +130,26 @@ export async function EducationSection() {
                   </p>
                 )}
 
-
+                {/* Achievements */}
+                {edu.achievements && edu.achievements.length > 0 && (
+                  <div className="mb-4 p-3 rounded-lg bg-muted/50">
+                    <h4 className="text-sm font-semibold mb-2 flex items-center gap-2">
+                      <IconAward className="w-4 h-4 text-primary" />
+                      Achievements & Honors
+                    </h4>
+                    <ul className="space-y-1.5">
+                      {edu.achievements.map((achievement, idx) => (
+                        <li
+                          key={`${edu.institution}-achievement-${idx}`}
+                          className="text-xs text-muted-foreground flex items-start gap-2"
+                        >
+                          <span className="text-primary mt-1">▸</span>
+                          <span className="flex-1">{achievement}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
 
                 {/* Website link */}
                 {edu.website && (

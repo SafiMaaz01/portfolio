@@ -5,10 +5,12 @@ import {
   CogIcon,
   CommentIcon,
   ComposeIcon,
+  DocumentIcon,
   DocumentsIcon,
   InlineIcon,
   ProjectsIcon,
   RocketIcon,
+  StarIcon,
   TagIcon,
   UserIcon,
 } from "@sanity/icons";
@@ -80,6 +82,24 @@ export const structure: StructureResolver = (S) =>
                 .icon(BookIcon)
                 .schemaType("education")
                 .child(S.documentTypeList("education").title("Education")),
+
+              S.listItem()
+                .title("Certifications")
+                .icon(DocumentIcon)
+                .schemaType("certification")
+                .child(
+                  S.documentTypeList("certification").title("Certifications"),
+                ),
+
+              S.listItem()
+                .title("Achievements & Awards")
+                .icon(StarIcon)
+                .schemaType("achievement")
+                .child(
+                  S.documentTypeList("achievement").title(
+                    "Achievements & Awards",
+                  ),
+                ),
             ]),
         ),
 
