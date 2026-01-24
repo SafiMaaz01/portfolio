@@ -4,7 +4,7 @@ import { useRouter } from "next/navigation";
 import { useDraftModeEnvironment } from "next-sanity/hooks";
 import { useTransition } from "react";
 import { disableDraftMode } from "@/app/actions/disableDraftMode";
-import { Button } from "./ui/button";
+
 
 export function DisableDraftMode() {
   const router = useRouter();
@@ -27,9 +27,13 @@ export function DisableDraftMode() {
       {pending ? (
         "Disabling draft mode..."
       ) : (
-        <Button type="button" variant="destructive" onClick={disable}>
+        <button
+          type="button"
+          onClick={disable}
+          className="bg-destructive text-white hover:bg-destructive/90 px-4 py-2 rounded-md text-sm font-medium transition-colors"
+        >
           Disable draft mode
-        </Button>
+        </button>
       )}
     </div>
   );
