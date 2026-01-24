@@ -55,13 +55,6 @@ export default defineType({
       description: "Notable courses, achievements, or activities",
     }),
     defineField({
-      name: "achievements",
-      title: "Achievements & Honors",
-      type: "array",
-      of: [{ type: "string" }],
-      description: "Dean's List, Scholarships, Awards, etc.",
-    }),
-    defineField({
       name: "logo",
       title: "Institution Logo",
       type: "image",
