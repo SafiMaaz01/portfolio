@@ -110,7 +110,7 @@ Manual:
 
 ═══════════════════════════════════════════════════════════════════
 
-Created: October 2024
+Created: January 2026
 Version: 1.0
 Compatible: Sanity v3+
 
