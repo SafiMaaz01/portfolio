@@ -93,7 +93,7 @@ const DivGrid = ({
   };
 
   return (
-    <div className={cn("relative z-[3]", className)} style={gridStyle}>
+    <div className={cn("relative z-3", className)} style={gridStyle}>
       {cells.map((idx) => {
         const rowIdx = Math.floor(idx / cols);
         const colIdx = idx % cols;
