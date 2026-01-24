@@ -8,7 +8,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-interface Skill {
+export interface Skill {
   name: string | null;
   category: string | null;
   proficiency: string | null;
