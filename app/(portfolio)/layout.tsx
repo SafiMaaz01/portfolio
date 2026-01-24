@@ -38,7 +38,7 @@ export default async function RootLayout({
             <FloatingDock />
 
             {/* Dark Mode Toggle – replaces hamburger */}
-            <div className="fixed top-4 right-4 z-[9999]">
+            <div className="fixed top-4 right-4 z-9999">
               <ModeToggle />
             </div>
 

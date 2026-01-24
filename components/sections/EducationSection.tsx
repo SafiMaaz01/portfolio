@@ -40,22 +40,6 @@ export async function EducationSection() {
       id="education"
       className="relative py-20 px-6 bg-muted/30 overflow-hidden"
     >
-      {/* Section-wide Dotted Glow Background */}
-      {/* <DottedGlowBackground
-        className="pointer-events-none opacity-30 dark:opacity-50 mask-radial-to-75% mask-radial-at-bottom"
-        opacity={0.5}
-        gap={10}
-        radius={3.5}
-        colorLightVar="--color-neutral-400"
-        glowColorLightVar="--color-primary"
-        colorDarkVar="--color-neutral-600"
-        glowColorDarkVar="--color-primary"
-        backgroundOpacity={0}
-        speedMin={0.2}
-        speedMax={0.8}
-        speedScale={1.2}
-      /> */}
-
       <div className="container mx-auto max-w-6xl relative z-10">
         <div className="text-center mb-16">
           <h2 className="text-4xl md:text-5xl font-bold mb-4">Education</h2>
@@ -71,7 +55,7 @@ export async function EducationSection() {
               className="group relative bg-card border rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300"
             >
               {/* Accent gradient bar */}
-              <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-primary via-primary/60 to-primary/30 z-10" />
+              <div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-primary via-primary/60 to-primary/30 z-10" />
 
               <div className="relative z-10 p-6">
                 {/* Header with logo and basic info */}

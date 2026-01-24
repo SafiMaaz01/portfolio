@@ -45,7 +45,7 @@ export async function CertificationsSection() {
   return (
     <section
       id="certifications"
-      className="py-20 px-6 bg-gradient-to-b from-background via-muted/20 to-background"
+      className="py-20 px-6 bg-linear-to-b from-background via-muted/20 to-background"
     >
       <div className="container mx-auto max-w-6xl">
         <div className="text-center mb-16">
@@ -74,7 +74,7 @@ export async function CertificationsSection() {
                   }}
                 >
                   {/* Inner Certificate - Dark Background */}
-                  <div className="relative bg-gradient-to-br from-zinc-900 via-zinc-900 to-zinc-950 dark:from-zinc-950 dark:via-black dark:to-zinc-950 border-2 border-yellow-600/40 p-8 flex flex-col min-h-[450px]">
+                  <div className="relative bg-linear-to-br from-zinc-900 via-zinc-900 to-zinc-950 dark:from-zinc-950 dark:via-black dark:to-zinc-950 border-2 border-yellow-600/40 p-8 flex flex-col min-h-[450px]">
                     {/* Decorative Corner Frames - Top Left */}
                     <div className="absolute top-0 left-0 w-20 h-20">
                       <div className="absolute top-3 left-3 w-10 h-10 border-t-2 border-l-2 border-yellow-600/60" />
