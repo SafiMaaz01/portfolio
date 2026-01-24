@@ -223,37 +223,6 @@ export type Blog = {
   readTime?: number;
 };
 
-export type Achievement = {
-  _id: string;
-  _type: "achievement";
-  _createdAt: string;
-  _updatedAt: string;
-  _rev: string;
-  title?: string;
-  type?:
-    | "award"
-    | "hackathon"
-    | "publication"
-    | "speaking"
-    | "open-source"
-    | "milestone"
-    | "recognition"
-    | "other";
-  issuer?: string;
-  date?: string;
-  description?: string;
-  image?: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  };
-  url?: string;
-  featured?: boolean;
-  order?: number;
-};
-
 export type Certification = {
   _id: string;
   _type: "certification";
@@ -631,7 +600,6 @@ export type AllSanitySchemaTypes =
   | Service
   | Slug
   | Blog
-  | Achievement
   | Certification
   | Testimonial
   | Education
@@ -755,36 +723,6 @@ export type ABOUT_QUERY_RESULT =
       location: string | null;
     }
   | null;
-
-// Source: components\sections\AchievementsSection.tsx
-// Variable: ACHIEVEMENTS_QUERY
-// Query: *[_type == "achievement"] | order(date desc){  title,  type,  issuer,  date,  description,  image,  url,  featured,  order}
-export type ACHIEVEMENTS_QUERY_RESULT = Array<{
-  title: string | null;
-  type:
-    | "award"
-    | "hackathon"
-    | "milestone"
-    | "open-source"
-    | "other"
-    | "publication"
-    | "recognition"
-    | "speaking"
-    | null;
-  issuer: string | null;
-  date: string | null;
-  description: string | null;
-  image: {
-    asset?: SanityImageAssetReference;
-    media?: unknown;
-    hotspot?: SanityImageHotspot;
-    crop?: SanityImageCrop;
-    _type: "image";
-  } | null;
-  url: string | null;
-  featured: boolean | null;
-  order: number | null;
-}>;
 
 // Source: components\sections\BlogSection.tsx
 // Variable: BLOG_QUERY
@@ -1260,7 +1198,6 @@ declare module "@sanity/client" {
   interface SanityQueries {
     '*[_type == "navigation"] | order(order asc){\n  title,\n  href,\n  icon,\n  isExternal\n}': NAVIGATION_QUERY_RESULT;
     '*[_id == "singleton-profile"][0]{\n  firstName,\n  middleName,\n  lastName,\n  fullBio,\n  yearsOfExperience,\n  stats,\n  email,\n  phone,\n  location\n}': ABOUT_QUERY_RESULT;
-    '*[_type == "achievement"] | order(date desc){\n  title,\n  type,\n  issuer,\n  date,\n  description,\n  image,\n  url,\n  featured,\n  order\n}': ACHIEVEMENTS_QUERY_RESULT;
     '*[_type == "blog"] | order(publishedAt desc){\n  title,\n  slug,\n  excerpt,\n  category,\n  tags,\n  publishedAt,\n  readTime,\n  featuredImage\n}': BLOG_QUERY_RESULT;
     '*[_type == "certification"] | order(issueDate desc){\n  name,\n  issuer,\n  issueDate,\n  expiryDate,\n  credentialId,\n  credentialUrl,\n  logo,\n  description,\n  skills[]->{name, category},\n  order\n}': CERTIFICATIONS_QUERY_RESULT;
     '*[_id == "singleton-profile"][0]{\n  email,\n  phone,\n  location,\n  socialLinks\n}': PROFILE_QUERY_RESULT;
