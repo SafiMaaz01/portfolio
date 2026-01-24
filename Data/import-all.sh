@@ -64,7 +64,6 @@ FILES=(
     "projects.ndjson"
     "blog.ndjson"
     "services.ndjson"
-    "achievements.ndjson"
     "certifications.ndjson"
     "testimonials.ndjson"
     "navigation.ndjson"

@@ -10,7 +10,6 @@ import {
   InlineIcon,
   ProjectsIcon,
   RocketIcon,
-  StarIcon,
   TagIcon,
   UserIcon,
 } from "@sanity/icons";
@@ -89,16 +88,6 @@ export const structure: StructureResolver = (S) =>
                 .schemaType("certification")
                 .child(
                   S.documentTypeList("certification").title("Certifications"),
-                ),
-
-              S.listItem()
-                .title("Achievements & Awards")
-                .icon(StarIcon)
-                .schemaType("achievement")
-                .child(
-                  S.documentTypeList("achievement").title(
-                    "Achievements & Awards",
-                  ),
                 ),
             ]),
         ),
