@@ -618,11 +618,11 @@ export type AllSanitySchemaTypes =
 
 export declare const internalGroqTypeReferenceTo: unique symbol;
 
-type ArrayOf<T> = Array<
-  T & {
-    _key: string;
-  }
->;
+// type ArrayOf<T> = Array<
+//   T & {
+//     _key: string;
+//   }
+// >;
 
 // Source: components\FloatingDock.tsx
 // Variable: NAVIGATION_QUERY

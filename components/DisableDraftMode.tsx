@@ -5,7 +5,6 @@ import { useDraftModeEnvironment } from "next-sanity/hooks";
 import { useTransition } from "react";
 import { disableDraftMode } from "@/app/actions/disableDraftMode";
 
-
 export function DisableDraftMode() {
   const router = useRouter();
   const [pending, startTransition] = useTransition();

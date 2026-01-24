@@ -38,7 +38,7 @@ export function ProfileImage({
     >
       <Image
         src={imageUrl}
-        alt={`${firstName} ${middleName ? middleName + " " : ""}${lastName}`}
+        alt={`${firstName} ${middleName ? `${middleName} ` : ""}${lastName}`}
         fill
         className="object-cover transition-transform duration-300 group-hover:scale-105"
         priority
