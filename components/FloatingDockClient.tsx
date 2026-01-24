@@ -64,8 +64,8 @@ export function FloatingDockClient({ navItems }: FloatingDockClientProps) {
   return (
     <>
       {/* Desktop (and now mobile) Floating Dock */}
-      <div className="hidden md:block fixed bottom-4 lg:left-1/2 lg:-translate-x-1/2 md:left-4 z-30 pointer-events-none group/dock">
-        <div className="flex items-center gap-2 px-3 py-2.5 rounded-xl md:rounded-2xl bg-white/20 dark:bg-black/30 hover:bg-white/30 dark:hover:bg-black/40 backdrop-blur-xl border border-white/30 dark:border-white/20 hover:border-white/40 dark:hover:border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] pointer-events-auto transition-all duration-300">
+      <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-30 pointer-events-none group/dock">
+        <div className="flex items-center gap-1.5 md:gap-2 px-2 py-2 md:px-3 md:py-2.5 rounded-xl md:rounded-2xl bg-white/20 dark:bg-black/30 hover:bg-white/30 dark:hover:bg-black/40 backdrop-blur-xl border border-white/30 dark:border-white/20 hover:border-white/40 dark:hover:border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.15)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.5)] pointer-events-auto transition-all duration-300">
           {desktop.visible.map((item) => (
             <DockIcon
               key={`${item.title}-${item.href}`}
@@ -80,14 +80,14 @@ export function FloatingDockClient({ navItems }: FloatingDockClientProps) {
               <button
                 type="button"
                 onClick={() => setDesktopMoreMenuOpen(!desktopMoreMenuOpen)}
-                className="group relative flex items-center justify-center w-12 h-12 md:w-12 md:h-12"
+                className="group relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12"
               >
                 <div className="relative flex items-center justify-center w-full h-full rounded-full bg-white/10 dark:bg-white/5 group-hover/dock:bg-white/40 dark:group-hover/dock:bg-white/20 backdrop-blur-md border border-white/20 dark:border-white/10 group-hover/dock:border-white/50 dark:group-hover/dock:border-white/30 transition-all duration-500 ease-out hover:scale-125 hover:-translate-y-2 md:hover:-translate-y-3 hover:bg-white/50! dark:hover:bg-white/30! hover:border-white/70! dark:hover:border-white/40! hover:shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)]">
                   <div className="w-6 h-6 md:w-6 md:h-6 text-neutral-400/60 group-hover/dock:text-neutral-500 dark:text-neutral-300/60 dark:group-hover/dock:text-neutral-300 group-hover:text-neutral-600! dark:group-hover:text-neutral-200! transition-colors duration-300">
                     {desktopMoreMenuOpen ? (
-                      <IconX className="w-6 h-6" />
+                      <IconX className="w-5 h-5 md:w-6 md:h-6" />
                     ) : (
-                      <IconMenu2 className="w-6 h-6" />
+                      <IconMenu2 className="w-5 h-5 md:w-6 md:h-6" />
                     )}
                   </div>
                 </div>
@@ -101,7 +101,7 @@ export function FloatingDockClient({ navItems }: FloatingDockClientProps) {
 
               {/* Desktop More Menu */}
               {desktopMoreMenuOpen && (
-                <div className="absolute bottom-16 left-1/2 -translate-x-1/2 z-100 flex flex-col-reverse gap-2 p-3 rounded-xl bg-white/90 dark:bg-black/90 backdrop-blur-xl border border-white/40 dark:border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] animate-in slide-in-from-bottom-2 duration-200">
+                <div className="absolute bottom-14 md:bottom-16 left-1/2 -translate-x-1/2 z-100 flex flex-col-reverse gap-2 p-3 rounded-xl bg-white/90 dark:bg-black/90 backdrop-blur-xl border border-white/40 dark:border-white/30 shadow-[0_8px_32px_0_rgba(0,0,0,0.3)] dark:shadow-[0_8px_32px_0_rgba(0,0,0,0.6)] animate-in slide-in-from-bottom-2 duration-200">
                   {desktop.hidden.map((item) => (
                     <DockIcon
                       key={`${item.title}-${item.href}-more`}
@@ -172,7 +172,7 @@ function DockIcon({
     <>
       <div className={isVertical ? verticalIconClasses : horizontalIconClasses}>
         <div
-          className={`w-6 h-6 md:w-6 md:h-6 ${
+          className={`w-5 h-5 md:w-6 md:h-6 ${
             isVertical
               ? "text-neutral-500 dark:text-neutral-300"
               : "text-neutral-400/60 group-hover/dock:text-neutral-500 dark:text-neutral-300/60 dark:group-hover/dock:text-neutral-300 group-hover:text-neutral-600! dark:group-hover:text-neutral-200! transition-colors duration-300"
@@ -186,7 +186,7 @@ function DockIcon({
   );
 
   const wrapperClasses =
-    "group relative flex items-center justify-center w-12 h-12 md:w-12 md:h-12";
+    "group relative flex items-center justify-center w-10 h-10 md:w-12 md:h-12";
 
   return item.onClick ? (
     <button type="button" onClick={handleClick} className={wrapperClasses}>
