@@ -5,6 +5,7 @@ import { sanityFetch } from "@/sanity/lib/live";
 
 const ABOUT_QUERY = defineQuery(`*[_id == "singleton-profile"][0]{
   firstName,
+  middleName,
   lastName,
   fullBio,
   yearsOfExperience,

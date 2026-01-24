@@ -9,6 +9,7 @@ import { ProfileImage } from "./ProfileImage";
 
 const HERO_QUERY = defineQuery(`*[_id == "singleton-profile"][0]{
   firstName,
+  middleName,
   lastName,
   headline,
   headlineStaticText,

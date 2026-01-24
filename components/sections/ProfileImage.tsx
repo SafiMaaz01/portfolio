@@ -7,12 +7,14 @@ import { useState } from "react";
 interface ProfileImageProps {
   imageUrl: string;
   firstName: string;
+  middleName?: string;
   lastName: string;
 }
 
 export function ProfileImage({
   imageUrl,
   firstName,
+  middleName,
   lastName,
 }: ProfileImageProps) {
   const [isHovered, setIsHovered] = useState(false);
@@ -36,7 +38,7 @@ export function ProfileImage({
     >
       <Image
         src={imageUrl}
-        alt={`${firstName} ${lastName}`}
+        alt={`${firstName} ${middleName ? middleName + " " : ""}${lastName}`}
         fill
         className="object-cover transition-transform duration-300 group-hover:scale-105"
         priority
